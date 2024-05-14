@@ -1,0 +1,12 @@
+From: "John Doe 👨‍💼" <john.doe@example.com>
+To: "Jane Smith 👩‍💼" <jane.smith@example.com>
+Subject: 📧 Test Email with Unicode Characters 💌
+Date: Tue, 24 May 2022 10:00:00 +0000
+Content-Type: text/plain; charset=utf-8
+
+Hello Jane 👋,
+
+This is a test email with Unicode characters. Here are some emojis: 😊❤️🎉
+
+Best regards,
+John 👨‍💼

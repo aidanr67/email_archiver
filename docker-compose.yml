@@ -1,0 +1,12 @@
+services:
+    mysql:
+        image: public.ecr.aws/docker/library/mysql:8
+        container_name: email_archiver-db
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql-data:/var/lib/mysql
+volumes:
+    mysql-data:
