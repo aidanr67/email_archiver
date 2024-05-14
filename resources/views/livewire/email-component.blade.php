@@ -13,7 +13,7 @@
         </div>
         <div class="text-gray-700 mt-4 border rounded border-gray-200 overflow-y-auto h-80">
             {{-- Here I prefer to output the plain body if we have one for because it looks better considering we don't actually want to just output unescaped code. --}}
-            <div id="body" class="p-8" aria-label="body">{{ $email->body_plain ?? $email->body }}</div>
+            <div id="body" class="p-8" aria-label="body">{{ $email->body_plain ?? strip_tags($email->body) }}</div>
         </div>
         @if($email->attachments !== null)
             <div class="text-gray-700 pt-10">
@@ -23,7 +23,6 @@
                         <li>{{ $attachment }}</li>
                     @endforeach
                 </ul>
-                <div id="body">{{ $email->body_plain }}</div>
             </div>
         @endif
         <div class="text-gray-700 pt-4">
