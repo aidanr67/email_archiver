@@ -41,13 +41,14 @@ class EmailsComponent extends Component implements HasForms, HasTable
             ->query(Email::query())
             ->columns([
                 TextColumn::make('sender_address')
-                    ->label('Sender')
-                    ->searchable(),
+                    ->label('Sender'),
                 TextColumn::make('recipient_address')
                     ->label('Recipient'),
                 TextColumn::make('subject')
                     ->label('Subject'),
-                TagsColumn::make('tags'),
+                TagsColumn::make('tags')
+                    ->label('Tags')
+                    ->searchable(),
             ])
             ->actions([
                 Action::make('view')
@@ -66,6 +67,7 @@ class EmailsComponent extends Component implements HasForms, HasTable
                 ->form([
                     FileUpload::make('eml_file')
                         ->label('.eml file')
+                        ->rule('mimes:eml')
                         ->required(),
                 ])
                 ->createAnother(false)

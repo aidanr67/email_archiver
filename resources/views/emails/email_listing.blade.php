@@ -10,17 +10,3 @@
     </div>
 </div>
 @endsection
-
-<style lang="scss">
-    .fi-btn-label {
-        color: #2d3748;
-    }
-    .fi-ta-search-field {
-        border: #2d3748;
-        border-style: solid;
-    }
-    .fi-modal-window {
-        border: #2d3748;
-        border-style: solid;
-    }
-</style>
