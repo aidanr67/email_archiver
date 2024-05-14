@@ -9,6 +9,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -18,11 +19,11 @@ use Illuminate\View\View;
 use Livewire\Component;
 
 /**
- * Class Emails
+ * Class EmailsComponent
  *
  * @package App\Livewire
  */
-class Emails extends Component implements HasForms, HasTable
+class EmailsComponent extends Component implements HasForms, HasTable
 {
     use InteractsWithForms;
     use InteractsWithTable;
@@ -46,6 +47,7 @@ class Emails extends Component implements HasForms, HasTable
                     ->label('Recipient'),
                 TextColumn::make('subject')
                     ->label('Subject'),
+                TagsColumn::make('tags'),
             ])
             ->actions([
                 Action::make('view')
@@ -77,6 +79,6 @@ class Emails extends Component implements HasForms, HasTable
      */
     public function render(): View
     {
-        return view('livewire.emails');
+        return view('livewire.emails-component');
     }
 }

@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Facade;
  *
  * @package App\Support\Facades
  *
- * @see App\Services\EmailService
+ * @see \App\Services\EmailService
  *
- * @method static Email parseAndSaveEml(string $emlPath) : string
+ * @method static Email parseAndSaveEml(string $emlPath)
+ * @method static void addTag(Email $email, string $tag)
  */
 class EmailServiceFacade extends Facade
 {

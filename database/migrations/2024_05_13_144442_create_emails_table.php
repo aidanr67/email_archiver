@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('sender_address')->nullable(false);
             $table->string('recipient_address')->nullable(false);
             $table->string('subject')->nullable(false);
-            $table->longText('body')->nullable(false);
+            $table->longText('body')->nullable();
+            $table->longText('body_plain')->nullable();
             $table->string('eml_location')->nullable(false);
+            $table->json('attachments')->default(null)->nullable();
             $table->json('tags')->default(null)->nullable();
             $table->timestamps();
         });

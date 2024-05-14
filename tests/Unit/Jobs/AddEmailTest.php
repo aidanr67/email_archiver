@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Jobs;
+namespace Unit\Jobs;
 
 use App\Jobs\AddEmail;
 use App\Models\Email;
@@ -14,6 +14,8 @@ use Tests\TestCase;
  * @package Tests\Unit\Jobs
  *
  * @small
+ *
+ * @coversDefaultClass \App\Jobs\AddEmail
  */
 class AddEmailTest extends TestCase
 {

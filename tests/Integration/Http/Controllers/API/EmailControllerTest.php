@@ -1,7 +1,8 @@
 <?php
-namespace Tests\Integration\Http\Controllers;
+namespace Integration\Http\Controllers\API;
 
 use App\Jobs\AddEmail;
+use App\Support\Facades\EmailServiceFacade;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
@@ -12,7 +13,7 @@ use Tests\TestCase;
  *
  * @package Tests\Integration\Http\Controllers
  *
- * @covers App\Http\Controllers\API\EmailController
+ * @coversDefaultClass \App\Http\Controllers\API\EmailController
  *
  * @small
  */
@@ -42,6 +43,7 @@ class EmailControllerTest extends TestCase
 
     /**
      * Test that the appropriate error and status are returned when the eml file is not provided.
+     *
      * @test
      */
     public function testValidationErrorAndStatusForEmlFile()
@@ -51,5 +53,24 @@ class EmailControllerTest extends TestCase
         // Assert the response
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['eml_file']);
+    }
+
+    /**
+     * Asserts that an exception in the service is bubbled up to the controller to be reported to the user.
+     *
+     * @return void
+     */
+    public function testServiceExceptionIsBubbledUp()
+    {
+        $file = UploadedFile::fake()->create('test.eml');
+
+        EmailServiceFacade::shouldReceive('parseAndSaveEml')
+            ->withArgs([$file])
+            ->andThrow(\Exception::class);
+
+        $response = $this->postJson('api/email', ['eml_file' => $file]);
+
+        $this->assertEquals(500, $response->getStatusCode());
+
     }
 }

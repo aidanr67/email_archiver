@@ -43,10 +43,12 @@ class EmailService
 
         $this->parser->setText($emlContents);
 
-        $data['sender_address'] = $this->parser->getHeader('from');
-        $data['recipient_address'] = $this->parser->getHeader('to');
-        $data['subject'] = $this->parser->getHeader('subject');
-        $data['body'] = $this->parser->getMessageBody('text') ?: null;
+        $data['sender_address'] = $this->parser->getHeader('from') ?: null;
+        $data['recipient_address'] = $this->parser->getHeader('to') ?: null;
+        $data['subject'] = $this->parser->getHeader('subject') ?: null;
+        $data['body_plain'] = $this->parser->getMessageBody('text') ?: null;
+        $data['body'] = $this->parser->getMessageBody('html') ?: null;
+        $data['attachments'] = $this->parser->getAttachments() ?: null;
 
         $storagePath = self::ARCHIVE_DIR . basename($emlPath);
         $data['eml_location'] = $storagePath;
@@ -54,5 +56,22 @@ class EmailService
         Storage::put($storagePath, $emlContents);
 
         return Email::create($data);
+    }
+
+    /**
+     * Appends a new tag to tag array.
+     *
+     * @param Email $email
+     * @param string $tag
+     *
+     * @return void
+     */
+    public function addTag(Email $email, string $tag): void
+    {
+        $tags = $email->tags;
+        $tags[] = $tag;
+        $email->tags = $tags;
+
+        $email->save();
     }
 }

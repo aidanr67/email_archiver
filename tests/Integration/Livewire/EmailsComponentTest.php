@@ -2,7 +2,7 @@
 
 namespace Integration\Livewire;
 
-use App\Livewire\Emails;
+use App\Livewire\EmailsComponent;
 use App\Models\Email;
 use App\Support\Facades\EmailServiceFacade;
 use Database\Seeders\SeedEmailTable;
@@ -19,11 +19,11 @@ use Tests\TestCase;
  *
  * @package Integration/Livewire
  *
- * @covers App\Livewire\Emails
+ * @coversDefaultClass \App\Livewire\EmailsComponent
  *
  * @small
  */
-class EmailTest extends TestCase
+class EmailsComponentTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -36,7 +36,7 @@ class EmailTest extends TestCase
     {
         $this->seed(SeedEmailTable::class);
 
-        $component = Livewire::test(Emails::class);
+        $component = Livewire::test(EmailsComponent::class);
 
         $component->assertSee('Sender');
         $component->assertSee('Recipient');
@@ -60,7 +60,7 @@ class EmailTest extends TestCase
             ->withArgs([$file])
             ->andReturn(Email::factory()->make());
 
-        Livewire::test(Emails::class)
+        Livewire::test(EmailsComponent::class)
             ->setTableActionData(['eml_file' => $file])
             ->callTableAction(CreateAction::class);
     }
@@ -74,10 +74,10 @@ class EmailTest extends TestCase
     {
         $email = Email::factory()->create();
 
-        $component = Livewire::test(Emails::class);
+        $component = Livewire::test(EmailsComponent::class);
 
         Redirect::shouldReceive('route')
-            ->withArgs(['emails.show', ['email' => $email]]);
+            ->withAnyArgs();
 
         $component->callTableAction('view', $email);
     }

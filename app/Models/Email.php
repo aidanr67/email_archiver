@@ -14,7 +14,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $recipient_address
  * @property string $subject
  * @property string $body
+ * @property string $body_plain
  * @property string $eml_location
+ * @property array $attachments
  * @property array $tags
  * @property Carbon created_at
  * @property Carbon updated_at
@@ -28,6 +30,13 @@ class Email extends Model
         'recipient_address',
         'subject',
         'body',
+        'body_plain',
+        'attachments',
         'eml_location',
+    ];
+
+    protected $casts = [
+        'tags' => 'array',
+        'attachments' => 'array',
     ];
 }

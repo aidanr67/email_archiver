@@ -1,10 +1,12 @@
 <?php
 
-namespace Tests\Integration\Services;
+namespace Integration\Services;
 
+use App\Models\Email;
 use App\Services\EmailService;
 use eXorus\PhpMimeMailParser\Parser;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +17,7 @@ use Tests\TestCase;
  *
  * @package Tests\Integration\Services
  *
- * @covers App\Services\EmailService
+ * @coversDefaultClass \App\Services\EmailService
  *
  * @small
  */
@@ -54,7 +56,7 @@ class EmailServiceTest extends TestCase
             'sender_address' => 'sender@example.com',
             'recipient_address' => 'recipient@example.com',
             'subject' => 'Test Email',
-            'body' => "This is a test email message.\n\nRegards,\nSender\n",
+            'body_plain' => "This is a test email message.\n\nRegards,\nSender\n",
             'eml_location' => $storagePath,
         ]);
     }
@@ -84,7 +86,7 @@ class EmailServiceTest extends TestCase
             'sender_address' => 'sender@example.com',
             'recipient_address' => 'recipient@example.com',
             'subject' => 'Test Email',
-            'body' => "This is a test email message.\n\nRegards,\nSender\n",
+            'body_plain' => "This is a test email message.\n\nRegards,\nSender\n",
             'eml_location' => $storagePath,
         ]);
     }
@@ -104,7 +106,7 @@ class EmailServiceTest extends TestCase
             ->andReturn(true);
 
         // Should throw exception as values cannot be null.
-        $this->expectException(\Exception::class);
+        $this->expectException(QueryException::class);
 
         // Call function we're testing.
         $this->service->parseAndSaveEml($emlFilePath);
@@ -124,5 +126,28 @@ class EmailServiceTest extends TestCase
         $this->expectException(FileNotFoundException::class);
         // Call function we're testing.
         $this->service->parseAndSaveEml($emlFilePath);
+    }
+
+    /**
+     * Test adding a tag to an email.
+     *
+     * @return void
+     */
+    public function testAddTagToEmail()
+    {
+        $email = Email::factory()->create();
+
+        $tag = 'Test Tag';
+
+        $this->service->addTag($email, $tag);
+
+        $updatedEmail = Email::find($email->id);
+
+        $this->assertContains($tag, $updatedEmail->tags);
+
+        $this->assertDatabaseHas('emails', [
+            'id' => $email->id,
+            'tags' => json_encode($updatedEmail->tags),
+        ]);
     }
 }

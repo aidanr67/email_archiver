@@ -6,7 +6,7 @@
         <h1 class="text-3xl font-bold text-gray-800">Email Archival</h1>
     </div>
     <div class="border border-gray-200 rounded">
-        <livewire:emails />
+        <livewire:emails-component />
     </div>
 </div>
 @endsection
