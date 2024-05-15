@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Email;
 use App\Support\Facades\EmailServiceFacade;
+use Illuminate\Http\RedirectResponse;
 use Livewire\Component;
 
 /**
@@ -25,6 +26,16 @@ class EmailComponent extends Component
     {
         EmailServiceFacade::addTag($this->email, $this->tag);
         $this->tag = '';
+    }
+
+    /**
+     * Redirect to index page.
+     *
+     * @return Illuminate\Http\RedirectResponse
+     */
+    public function goToEmails()
+    {
+        return redirect()->route('emails.index');
     }
 
     /**

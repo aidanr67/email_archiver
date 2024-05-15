@@ -41,11 +41,14 @@ class EmailsComponent extends Component implements HasForms, HasTable
             ->query(Email::query())
             ->columns([
                 TextColumn::make('sender_address')
-                    ->label('Sender'),
+                    ->label('Sender')
+                    ->searchable(),
                 TextColumn::make('recipient_address')
-                    ->label('Recipient'),
+                    ->label('Recipient')
+                    ->searchable(),
                 TextColumn::make('subject')
-                    ->label('Subject'),
+                    ->label('Subject')
+                    ->searchable(),
                 TagsColumn::make('tags')
                     ->label('Tags')
                     ->searchable(),
