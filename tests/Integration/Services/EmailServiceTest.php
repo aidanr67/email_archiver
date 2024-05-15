@@ -62,36 +62,6 @@ class EmailServiceTest extends TestCase
     }
 
     /**
-     * Test that it can handle names of files in public directory.
-     *
-     * @return void
-     */
-    public function testPublicFileParseAndSaveEml()
-    {
-        $emlFilePath = 'basic_sample.eml';
-        Storage::shouldReceive('path')
-            ->withArgs(['public'])
-            ->andReturn(base_path('tests/files/'));
-        $storagePath = EmailService::ARCHIVE_DIR . basename($emlFilePath);
-
-        Storage::shouldReceive('put')->withArgs([$storagePath, File::get(base_path('tests/files/') . '/' . $emlFilePath)])
-            ->andReturn(true);
-        // Call function we're testing.
-        $resultantEmail = $this->service->parseAndSaveEml($emlFilePath);
-
-        $this->assertTrue($resultantEmail->exists);
-
-        // Assert that the email record is saved in the database
-        $this->assertDatabaseHas('emails', [
-            'sender_address' => 'sender@example.com',
-            'recipient_address' => 'recipient@example.com',
-            'subject' => 'Test Email',
-            'body_plain' => "This is a test email message.\n\nRegards,\nSender\n",
-            'eml_location' => $storagePath,
-        ]);
-    }
-
-    /**
      * Test that empty eml file is handled correctly.
      *
      * @return void

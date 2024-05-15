@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Jobs\AddEmail;
 use App\Models\Email;
 use App\Support\Facades\EmailServiceFacade;
 use Filament\Forms\Components\FileUpload;
@@ -15,6 +16,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -65,7 +67,8 @@ class EmailsComponent extends Component implements HasForms, HasTable
                 CreateAction::make()
                     ->label('Upload Email')
                     ->using(function (array $data, EmailServiceFacade $serviceFacade): Email {
-                        return $serviceFacade::parseAndSaveEml($data['eml_file']);
+                        $file = Storage::path('public') . '/' . $data['eml_file'];
+                        return $serviceFacade::parseAndSaveEml($file);
                     })
                 ->form([
                     FileUpload::make('eml_file')

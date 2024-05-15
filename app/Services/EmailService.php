@@ -35,10 +35,6 @@ class EmailService
      */
     public function parseAndSaveEml(string $emlPath): Email
     {
-        if (!File::exists($emlPath)) {
-            $emlPath = Storage::path('public') . '/' . $emlPath;
-        }
-
         $emlContents = File::get($emlPath);
 
         $this->parser->setText($emlContents);
